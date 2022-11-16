@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: astalha < astalha@student.1337.ma>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 01:52:11 by astalha           #+#    #+#             */
-/*   Updated: 2022/11/16 22:12:11 by astalha          ###   ########.fr       */
+/*   Updated: 2022/11/16 22:26:32 by astalha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*justrest(char *hold)
 {
@@ -77,29 +77,29 @@ char	*get_the_line(char *hold)
 
 char	*get_next_line(int fd)
 {
-	static char	*hold;
+	static char	*hold[10240];
 	char		*line;
 	char		*ret;
 	int			re;
-
+    
 	re = 1;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!hold)
-		hold = ft_strdup("");
+	if (!hold[fd])
+		hold[fd] = ft_strdup("");
 	line = (char *)malloc(BUFFER_SIZE + 1);
 	if (!line)
 		return (NULL);
-	while (re && check(hold))
+	while (re && check(hold[fd]))
 	{
 		re = read(fd, line, BUFFER_SIZE);
 		if (re < 0)
-			return (free(hold), hold = NULL, free(line), NULL);
+			return (free(hold[fd]), hold[fd] = NULL,free(line), NULL);
 		line[re] = 0;
-		hold = join(hold, line);
+		hold[fd] = join(hold[fd], line);
 	}
 	free(line);
-	ret = get_the_line(hold);
-	hold = justrest(hold);
+	ret = get_the_line(hold[fd]);
+	hold[fd] = justrest(hold[fd]);
 	return (ret);
 }
