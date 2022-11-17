@@ -6,7 +6,7 @@
 /*   By: astalha < astalha@student.1337.ma>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 01:52:45 by astalha           #+#    #+#             */
-/*   Updated: 2022/11/16 21:24:00 by astalha          ###   ########.fr       */
+/*   Updated: 2022/11/17 12:51:42 by astalha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 int		check(char *line);
 size_t	ft_strlen(const char	*str);
 void	ft_strlcpy(char *dst, char *src, size_t dstsize);
+void	cpy(char *s1, char *s2, int j);
 char	*join(char *s1, char *s2);
 char	*justrest(char *hold);
 char	*get_the_line(char *hold);

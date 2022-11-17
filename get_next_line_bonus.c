@@ -6,20 +6,42 @@
 /*   By: astalha < astalha@student.1337.ma>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 01:52:11 by astalha           #+#    #+#             */
-/*   Updated: 2022/11/16 22:26:32 by astalha          ###   ########.fr       */
+/*   Updated: 2022/11/17 12:48:40 by astalha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
+void	cpy(char *s1, char *s2, int j)
+{
+	int	i;
+
+	i = 0;
+	if (j == 0)
+	{
+		while (s2[i] && s2[i] != '\n')
+		{
+			s1[i] = s2[i];
+			i++;
+		}
+		if (s2[i] == '\n')
+			s1[i++] = '\n';
+		s1[i] = 0;
+	}
+	else
+	{
+		while (s2[j])
+			s1[i++] = s2[j++];
+		s1[i] = 0;
+	}
+}
+
 char	*justrest(char *hold)
 {
 	char	*newhold;
 	size_t	i;
-	int		j;
 
 	i = 0;
-	j = 0;
 	while (hold[i] && hold[i] != '\n')
 		i++;
 	if (hold[i] == '\n')
@@ -29,9 +51,7 @@ char	*justrest(char *hold)
 	newhold = malloc(ft_strlen(hold) - i + 1);
 	if (!newhold)
 		return (NULL);
-	while (hold[i])
-	newhold[j++] = hold[i++];
-	newhold[j] = 0;
+	cpy(newhold, hold, i);
 	return (free(hold), hold = NULL, newhold);
 }
 
@@ -63,15 +83,7 @@ char	*get_the_line(char *hold)
 	line = malloc(i + 2);
 	if (!line)
 		return (NULL);
-	i = 0;
-	while (hold[i] && hold[i] != '\n')
-	{
-		line[i] = hold[i];
-			i++;
-	}
-	if (hold[i] == '\n')
-		line[i++] = '\n';
-		line[i] = 0;
+	cpy(line, hold, 0);
 	return (line);
 }
 
@@ -81,7 +93,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*ret;
 	int			re;
-    
+
 	re = 1;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -94,7 +106,7 @@ char	*get_next_line(int fd)
 	{
 		re = read(fd, line, BUFFER_SIZE);
 		if (re < 0)
-			return (free(hold[fd]), hold[fd] = NULL,free(line), NULL);
+			return (free(hold[fd]), hold[fd] = NULL, free(line), NULL);
 		line[re] = 0;
 		hold[fd] = join(hold[fd], line);
 	}
